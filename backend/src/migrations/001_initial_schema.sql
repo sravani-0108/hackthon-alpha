@@ -1,0 +1,3 @@
+-- Migration: 001_initial_schema
+-- This migration mirrors src/docs/schema.sql for version tracking.
+-- Run via: npm run db:migrate

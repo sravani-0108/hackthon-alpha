@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: AML Alert Triage API
+  version: 1.0.0
+tags:
+  - name: Authentication
+    description: Login and registration
+  - name: Dashboard
+    description: Dashboard metrics
+  - name: Customers
+    description: Customer management
+  - name: Transactions
+    description: Transaction history
+  - name: Alerts
+    description: AML alerts
+  - name: Investigations
+    description: Alert investigations

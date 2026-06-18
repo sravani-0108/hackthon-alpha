@@ -1,0 +1,69 @@
+{
+  "name": "aml-alert-triage-backend",
+  "version": "1.0.0",
+  "description": "AML Alert Triage & Investigation System Backend",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec tsx src/server.ts",
+    "db:migrate": "tsx src/seeders/runMigrations.ts",
+    "db:seed": "tsx src/seeders/runSeeders.ts",
+    "db:reset-auth": "tsx src/seeders/runResetAuth.ts",
+    "db:sample": "tsx src/seeders/runSampleData.ts",
+    "db:fix": "tsx src/seeders/runFixData.ts",
+    "db:false-positive": "tsx src/seeders/runFalsePositiveSamples.ts",
+    "db:adk-test": "tsx src/seeders/runAdkTestData.ts",
+    "db:reset-test": "tsx src/seeders/runResetTestData.ts",
+    "db:media-fraud": "tsx src/seeders/runMediaFraudTestData.ts",
+    "db:agent-pipeline": "tsx src/seeders/runAgentPipelineTestData.ts",
+    "db:test-data": "npm run db:sample && npm run db:false-positive && npm run db:adk-test",
+    "db:setup": "npm run db:migrate && npm run db:seed && npm run db:sample && npm run db:fix && npm run db:false-positive"
+  },
+  "keywords": [
+    "aml",
+    "banking",
+    "express",
+    "postgresql",
+    "typescript"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@google/adk": "^1.2.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.21.0",
+    "reflect-metadata": "^0.2.2",
+    "socket.io": "^4.8.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.30",
+    "uuid": "^10.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@google/adk-devtools": "^1.2.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.7",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

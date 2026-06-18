@@ -1,0 +1,1 @@
+{"version":3,"file":"riskCalculator.d.ts","sourceRoot":"","sources":["../../src/utils/riskCalculator.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,aAAa,EAAE,YAAY,EAAE,MAAM,UAAU,CAAC;AAEvD,eAAO,MAAM,qBAAqB,GAAI,WAAW,MAAM,KAAG,YAOzD,CAAC;AAEF,eAAO,MAAM,iBAAiB,GAAI,WAAW,MAAM,KAAG,aAKrD,CAAC;AAEF,eAAO,MAAM,YAAY,GAAI,OAAO,MAAM,KAAG,MAA2C,CAAC"}

@@ -1,0 +1,2 @@
+export declare const getStats: import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
+//# sourceMappingURL=dashboardController.d.ts.map
