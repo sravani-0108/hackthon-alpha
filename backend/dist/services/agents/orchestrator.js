@@ -16,6 +16,9 @@ class Orchestrator {
         const alert = await alertRepository_1.default.findById(alertId);
         if (!alert)
             throw Object.assign(new Error('Alert not found.'), { statusCode: 404 });
+        if (alert.status !== 'Open') {
+            throw Object.assign(new Error(`Investigation can only run for Open alerts. Current status: ${alert.status}.`), { statusCode: 409 });
+        }
         const investigationRepo = database_1.AppDataSource.getRepository(Investigation_1.Investigation);
         const investigation = await investigationRepo.save(investigationRepo.create({
             alert_id: alertId,

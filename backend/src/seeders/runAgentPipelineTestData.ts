@@ -307,7 +307,7 @@ async function seedAgentPipelineTestData(): Promise<void> {
         await client.query(
           `INSERT INTO transactions (account_id, amount, transaction_type, sender_account, receiver_account, country, transaction_date, status)
            VALUES ($1,$2,$3,$4,$5,'India',$6,'Completed')`,
-          [accId, h.amount, h.type, h.from, h.to ?? s.account.num, day(h.daysAgo)]
+          [accId, h.amount, h.type, h.from, (h as TxnHistory).to ?? s.account.num, day(h.daysAgo)]
         );
       }
 

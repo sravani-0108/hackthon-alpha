@@ -17,6 +17,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     database: index_1.default.db.name,
     synchronize: false,
     logging: index_1.default.env === 'development',
+    extra: {
+        connectionTimeoutMillis: 30000,
+    },
     entities: [
         models_1.User,
         models_1.Customer,

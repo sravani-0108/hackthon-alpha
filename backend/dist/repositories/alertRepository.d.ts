@@ -21,6 +21,7 @@ declare class AlertRepository {
     update(id: number, updateData: Partial<AlertCreationAttributes>): Promise<Alert | null>;
     countByStatus(status: AlertStatus): Promise<number>;
     countOpen(): Promise<number>;
+    countHighAndCritical(): Promise<number>;
     countAll(): Promise<number>;
 }
 declare const _default: AlertRepository;

@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeCase = exports.assignCase = exports.getCaseById = exports.getCases = void 0;
+exports.resolveCase = exports.closeCase = exports.assignCase = exports.getCaseById = exports.getCases = void 0;
 const caseService_1 = __importDefault(require("../services/caseService"));
 const apiResponse = __importStar(require("../utils/apiResponse"));
 const asyncHandler_1 = __importDefault(require("../utils/asyncHandler"));
@@ -55,5 +55,14 @@ exports.assignCase = (0, asyncHandler_1.default)(async (req, res) => {
 exports.closeCase = (0, asyncHandler_1.default)(async (req, res) => {
     const amlCase = await caseService_1.default.closeCase(parseInt(req.params.id, 10));
     return apiResponse.success(res, amlCase, 'Case closed.');
+});
+exports.resolveCase = (0, asyncHandler_1.default)(async (req, res) => {
+    const decision = req.body.decision;
+    if (decision !== 'CLEAR' && decision !== 'SAR') {
+        return apiResponse.error(res, 'Decision must be CLEAR or SAR.', 400);
+    }
+    const amlCase = await caseService_1.default.resolveCase(parseInt(req.params.id, 10), decision, req.user.id, req.body.notes);
+    const message = decision === 'CLEAR' ? 'Case marked as CLEAR and closed.' : 'SAR filed and case updated.';
+    return apiResponse.success(res, amlCase, message);
 });
 //# sourceMappingURL=caseController.js.map

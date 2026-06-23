@@ -42,5 +42,6 @@ router.get('/', auth_1.authenticate, (0, rbac_1.authorize)(rbac_1.ROLES.BANK_MAN
 router.get('/:id', auth_1.authenticate, (0, rbac_1.authorize)(rbac_1.ROLES.BANK_MANAGER, rbac_1.ROLES.ADMIN), caseController.getCaseById);
 router.put('/:id/assign', auth_1.authenticate, (0, rbac_1.authorize)(rbac_1.ROLES.BANK_MANAGER, rbac_1.ROLES.ADMIN), caseController.assignCase);
 router.put('/:id/close', auth_1.authenticate, (0, rbac_1.authorize)(rbac_1.ROLES.BANK_MANAGER, rbac_1.ROLES.ADMIN), caseController.closeCase);
+router.put('/:id/resolve', auth_1.authenticate, (0, rbac_1.authorize)(rbac_1.ROLES.BANK_MANAGER, rbac_1.ROLES.ADMIN), caseController.resolveCase);
 exports.default = router;
 //# sourceMappingURL=caseRoutes.js.map

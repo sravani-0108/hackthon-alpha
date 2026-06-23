@@ -75,6 +75,11 @@ class InvestigationService {
             error.statusCode = 404;
             throw error;
         }
+        if (alert.status !== 'Open') {
+            const error = new Error(`Investigation can only be started for Open alerts. Current status: ${alert.status}.`);
+            error.statusCode = 409;
+            throw error;
+        }
         const result = await agentService_1.default.runFullInvestigation(alertId, managerId);
         if (alert.customer) {
             await notificationService_1.default.notifyInvestigationComplete(alert, result.decision, result.confidence);

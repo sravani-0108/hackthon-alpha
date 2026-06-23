@@ -53,7 +53,12 @@ class AlertRepository {
     }
     async countOpen() {
         return this.repo().count({
-            where: { status: (0, typeorm_1.In)(['Open', 'Under Investigation', 'Escalated']) },
+            where: { status: 'Open' },
+        });
+    }
+    async countHighAndCritical() {
+        return this.repo().count({
+            where: { severity: (0, typeorm_1.In)(['High', 'Critical']) },
         });
     }
     async countAll() {

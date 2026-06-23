@@ -1,10 +1,21 @@
+import { Alert } from '../models/Alert';
 declare class DashboardService {
     getStats(): Promise<{
         totalCustomers: number;
         totalAlerts: number;
         openAlerts: number;
-        highRiskCustomers: number;
-        recentAlerts: import("../models").Alert[];
+        escalatedAlerts: number;
+        highRisk: number;
+        inProgressInvestigations: number;
+        totalInvestigations: number;
+        activeCases: number;
+        severityBreakdown: {
+            critical: number;
+            high: number;
+            medium: number;
+            low: number;
+        };
+        recentOpenAlerts: Alert[];
     }>;
 }
 declare const _default: DashboardService;
