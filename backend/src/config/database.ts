@@ -24,6 +24,9 @@ export const AppDataSource = new DataSource({
   database: config.db.name,
   synchronize: false,
   logging: config.env === 'development',
+  extra: {
+    connectionTimeoutMillis: 30000,
+  },
   entities: [
     User,
     Customer,

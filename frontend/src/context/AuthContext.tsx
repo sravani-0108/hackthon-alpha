@@ -12,11 +12,31 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+function loadStoredUser(): User | null {
+  const token = localStorage.getItem('token');
+  const stored = localStorage.getItem('user');
+  if (!token || !stored) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    return null;
+  }
+  try {
+    return JSON.parse(stored) as User;
+  } catch {
+    clearSession();
+    return null;
+  }
+}
+
+function clearSession(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    const stored = localStorage.getItem('user');
-    return stored ? JSON.parse(stored) : null;
-  });
+  const [user, setUser] = useState<User | null>(() => loadStoredUser());
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -42,9 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore */
     }
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    clearSession();
     setUser(null);
   };
 

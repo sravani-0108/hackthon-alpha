@@ -17,6 +17,7 @@
     "db:reset-test": "tsx src/seeders/runResetTestData.ts",
     "db:media-fraud": "tsx src/seeders/runMediaFraudTestData.ts",
     "db:agent-pipeline": "tsx src/seeders/runAgentPipelineTestData.ts",
+    "db:demo": "tsx src/seeders/runDemoDataset.ts",
     "db:test-data": "npm run db:sample && npm run db:false-positive && npm run db:adk-test",
     "db:setup": "npm run db:migrate && npm run db:seed && npm run db:sample && npm run db:fix && npm run db:false-positive"
   },

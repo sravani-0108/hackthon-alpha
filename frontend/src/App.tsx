@@ -14,7 +14,11 @@ import CustomerDetail from './pages/CustomerDetail';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
-  return user ? <>{children}</> : <Navigate to="/login" replace />;
+  const hasToken = Boolean(localStorage.getItem('token'));
+  if (!user || !hasToken) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
 }
 
 function AppRoutes() {

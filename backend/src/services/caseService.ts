@@ -33,12 +33,12 @@ class CaseService {
         customer_id: customerId,
         priority,
         summary,
-        status: 'Open',
+        status: 'Under Review',
       })
     );
   }
 
-  async getCases(query: { page?: string; limit?: string; status?: string }) {
+  async getCases(query: { page?: string; limit?: string; status?: string; includeClosed?: string }) {
     const { page, limit, offset } = getPaginationParams(query);
 
     const qb = applyQueryPagination(
@@ -47,12 +47,17 @@ class CaseService {
         .leftJoinAndSelect('c.customer', 'customer')
         .leftJoinAndSelect('c.alert', 'alert')
         .leftJoinAndSelect('c.assignee', 'assignee')
+        .leftJoinAndSelect('c.investigation', 'investigation')
         .orderBy('c.created_at', 'DESC'),
       offset,
       limit
     );
 
-    if (query.status) qb.andWhere('c.status = :status', { status: query.status });
+    if (query.status) {
+      qb.andWhere('c.status = :status', { status: query.status });
+    } else if (query.includeClosed !== 'true') {
+      qb.andWhere('c.status != :closed', { closed: 'Closed' });
+    }
 
     const [rows, count] = await qb.getManyAndCount();
 

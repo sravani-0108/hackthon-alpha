@@ -7,6 +7,12 @@
     "db:setup": "npm run db:setup --prefix backend",
     "dev:backend": "npm run dev --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
+    "ngrok": "node scripts/ngrok-tunnel.mjs",
+    "dev:public": "concurrently -n frontend,ngrok -c blue,green \"npm run dev:frontend\" \"npm run ngrok\"",
     "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "@ngrok/ngrok": "^1.4.1",
+    "concurrently": "^9.1.2"
   }
 }

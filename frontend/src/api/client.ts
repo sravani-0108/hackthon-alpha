@@ -7,12 +7,45 @@ interface ApiResponse<T> {
   pagination?: { total: number; page: number; limit: number; totalPages: number };
 }
 
+function clearSession(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+}
+
+function redirectToLogin(): void {
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login';
+  }
+}
+
 class ApiClient {
   private getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  private async refreshAccessToken(): Promise<string | null> {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) return null;
+
+    try {
+      const res = await fetch(`${API_BASE}/auth/refresh-token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      });
+      const json = (await res.json()) as ApiResponse<{ token: string; refreshToken: string }>;
+      if (!res.ok || !json.success) return null;
+
+      localStorage.setItem('token', json.data.token);
+      localStorage.setItem('refreshToken', json.data.refreshToken);
+      return json.data.token;
+    } catch {
+      return null;
+    }
+  }
+
+  private async request<T>(path: string, options: RequestInit = {}, retry = true): Promise<T> {
     const token = this.getToken();
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -32,6 +65,24 @@ class ApiClient {
           throw new Error(`Request failed (${res.status})`);
         }
         throw new Error('Invalid JSON response from server');
+      }
+    }
+
+    if (res.status === 401 && retry && path !== '/auth/login' && path !== '/auth/refresh-token') {
+      const newToken = await this.refreshAccessToken();
+      if (newToken) {
+        return this.request<T>(path, options, false);
+      }
+      clearSession();
+      redirectToLogin();
+      throw new Error(json?.message || 'Session expired. Please log in again.');
+    }
+
+    if (!res.ok) {
+      if (res.status === 502 || res.status === 503) {
+        throw new Error(
+          'Backend unavailable (502). Ensure the API server is running: cd hackthon-alpha/backend && npm run dev'
+        );
       }
     }
 
@@ -146,8 +197,18 @@ export interface DashboardStats {
   totalCustomers: number;
   totalAlerts: number;
   openAlerts: number;
+  escalatedAlerts: number;
   highRisk: number;
-  recentAlerts: Alert[];
+  inProgressInvestigations: number;
+  totalInvestigations: number;
+  activeCases: number;
+  severityBreakdown: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+  };
+  recentOpenAlerts: Alert[];
 }
 
 export interface Alert {
@@ -251,6 +312,7 @@ export interface Case {
   investigation_id?: number;
   customer?: Customer;
   alert?: Alert;
+  investigation?: Pick<Investigation, 'id' | 'ai_decision' | 'confidence' | 'status'>;
 }
 
 export interface CaseDetail extends Case {

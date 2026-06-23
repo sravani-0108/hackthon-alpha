@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { api } from '../api/client';
 import type { CaseDetail } from '../api/client';
 import { FormattedReport } from '../components/InvestigationReportView';
+import { caseStatusBadgeClass, formatCaseStatus } from '../utils/caseStatus';
 
 export default function CaseDetailPage() {
   const { id } = useParams();
@@ -33,9 +34,15 @@ export default function CaseDetailPage() {
           <h1>{caseData.case_number}</h1>
           <p>
             <span className={`badge badge-${caseData.priority.toLowerCase()}`}>{caseData.priority}</span>
-            {' '}{caseData.status}
+            {' '}
+            <span className={`badge ${caseStatusBadgeClass(caseData.status)}`}>
+              {formatCaseStatus(caseData.status)}
+            </span>
+            {caseData.alert?.status && (
+              <> · Alert: <strong>{caseData.alert.status}</strong></>
+            )}
             {aiDecision && (
-              <> · AI recommendation: <strong>{aiDecision}</strong></>
+              <> · AI: <strong>{aiDecision}</strong></>
             )}
           </p>
         </div>

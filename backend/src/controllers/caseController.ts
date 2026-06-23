@@ -4,7 +4,9 @@ import * as apiResponse from '../utils/apiResponse';
 import asyncHandler from '../utils/asyncHandler';
 
 export const getCases = asyncHandler(async (req: Request, res: Response) => {
-  const result = await caseService.getCases(req.query as { page?: string; limit?: string; status?: string });
+  const result = await caseService.getCases(
+    req.query as { page?: string; limit?: string; status?: string; includeClosed?: string }
+  );
   return apiResponse.paginated(res, result.cases, result.pagination);
 });
 
